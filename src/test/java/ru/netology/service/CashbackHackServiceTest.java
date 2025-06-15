@@ -1,43 +1,37 @@
-package ru.netology.service;
+package  ru.netology.service;
 
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+import org.testng.Assert;
+import ru.netology.service.CashbackHackService;
 
+@Test(groups = {"cashback-test"})
 public class CashbackHackServiceTest {
 
-    @Test
-    public void shouldReturn100IfAmountIs900() {
-        CashbackHackService service = new CashbackHackService();
-        int amount = 900;
-        int actual = service.remain(amount);
-        int expected = 100;
-        assertEquals(expected, actual);
+    private CashbackHackService service;
+
+    @BeforeMethod
+    public void setUp() {
+        this.service = new CashbackHackService();
     }
 
-    @Test
-    public void shouldReturn0IfAmountIs1000() {
-        CashbackHackService service = new CashbackHackService();
-        int amount = 1000;
-        int actual = service.remain(amount);
-        int expected = 0;
-        assertEquals(expected, actual);
+    @Test(description="Проверка остатка при покупке ровно на тысячу рублей")
+    public void testRemainWithExactThousand() {
+        Assert.assertEquals(service.remain(1000), 0);
     }
 
-    @Test
-    public void shouldReturn500IfAmountIs1500() {
-        CashbackHackService service = new CashbackHackService();
-        int amount = 1500;
-        int actual = service.remain(amount);
-        int expected = 500;
-        assertEquals(expected, actual);
+    @Test(description="Проверка остатка при покупке менее тысячи рублей")
+    public void testRemainBelowThousand() {
+        Assert.assertEquals(service.remain(900), 100);
     }
 
-    @Test
-    public void shouldReturn0IfAmountIs0() {
-        CashbackHackService service = new CashbackHackService();
-        int amount = 0;
-        int actual = service.remain(amount);
-        int expected = 0;
-        assertEquals(expected, actual);
+    @Test(description="Проверка остатка при крупной покупке")
+    public void testRemainAboveThousand() {
+        Assert.assertEquals(service.remain(10000), 0);
+    }
+
+    @Test(description="Проверка предельной ситуации чуть ниже тысячи")
+    public void testRemainJustBeforeNextBoundary() {
+        Assert.assertEquals(service.remain(999), 1);
     }
 }
