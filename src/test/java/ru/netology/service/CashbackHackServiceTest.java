@@ -1,37 +1,35 @@
-package  ru.netology.service;
+package ru.netology.service;
 
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-import org.testng.Assert;
-import ru.netology.service.CashbackHackService;
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
-@Test(groups = {"cashback-test"})
 public class CashbackHackServiceTest {
 
     private CashbackHackService service;
 
-    @BeforeMethod
-    public void setUp() {
+    @Before
+    public void setUp() throws Exception {
         this.service = new CashbackHackService();
     }
 
-    @Test(description="Проверка остатка при покупке ровно на тысячу рублей")
+    @Test
     public void testRemainWithExactThousand() {
-        Assert.assertEquals(service.remain(1000), 0);
+        assertEquals(0, service.remain(1000));
     }
 
-    @Test(description="Проверка остатка при покупке менее тысячи рублей")
+    @Test
     public void testRemainBelowThousand() {
-        Assert.assertEquals(service.remain(900), 100);
+        assertEquals(100, service.remain(900));
     }
 
-    @Test(description="Проверка остатка при крупной покупке")
+    @Test
     public void testRemainAboveThousand() {
-        Assert.assertEquals(service.remain(10000), 0);
+        assertEquals(0, service.remain(10000));
     }
 
-    @Test(description="Проверка предельной ситуации чуть ниже тысячи")
+    @Test
     public void testRemainJustBeforeNextBoundary() {
-        Assert.assertEquals(service.remain(999), 1);
+        assertEquals(1, service.remain(999));
     }
 }
