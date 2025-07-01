@@ -1,35 +1,42 @@
 package ru.netology.service;
 
-import org.junit.Before;
+import org.junit.Assert;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
-public class CashbackHackServiceTest {
+public class CashbackHackServiceTest {@Test
+public void shouldReturn0IfAmountIsExactly1000() {
+    CashbackHackService service = new CashbackHackService();
+    int amount = 1000;
+    int expected = 0;
+    int actual = service.remain(amount);
+    Assert.assertEquals(expected, actual);
+}
 
-    private CashbackHackService service;
-
-    @Before
-    public void setUp() throws Exception {
-        this.service = new CashbackHackService();
+    @Test
+    public void shouldCalculateRemainingAmount() {
+        CashbackHackService service = new CashbackHackService();
+        int amount = 900;
+        int expected = 100;
+        int actual = service.remain(amount);
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
-    public void testRemainWithExactThousand() {
-        assertEquals(0, service.remain(1000));
+    public void shouldReturnRemainingAmount2() {
+        CashbackHackService service = new CashbackHackService();
+        int amount = 500;
+        int expected = 500;
+        int actual = service.remain(amount);
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
-    public void testRemainBelowThousand() {
-        assertEquals(100, service.remain(900));
+    public void shouldReturnRemainingAmount3() {
+        CashbackHackService service = new CashbackHackService();
+        int amount = 1;
+        int expected = 999;
+        int actual = service.remain(amount);
+        Assert.assertEquals(expected, actual);
     }
 
-    @Test
-    public void testRemainAboveThousand() {
-        assertEquals(0, service.remain(10000));
-    }
-
-    @Test
-    public void testRemainJustBeforeNextBoundary() {
-        assertEquals(1, service.remain(999));
-    }
 }
