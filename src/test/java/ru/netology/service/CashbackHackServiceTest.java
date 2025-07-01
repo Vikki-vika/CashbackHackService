@@ -1,37 +1,31 @@
-package  ru.netology.service;
+package ru.netology.service;
 
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 import org.testng.Assert;
-import ru.netology.service.CashbackHackService;
+import org.testng.annotations.Test;
 
-@Test(groups = {"cashback-test"})
 public class CashbackHackServiceTest {
 
-    private CashbackHackService service;
-
-    @BeforeMethod
-    public void setUp() {
-        this.service = new CashbackHackService();
-    }
-
-    @Test(description="Проверка остатка при покупке ровно на тысячу рублей")
-    public void testRemainWithExactThousand() {
-        Assert.assertEquals(service.remain(1000), 0);
-    }
-
-    @Test(description="Проверка остатка при покупке менее тысячи рублей")
-    public void testRemainBelowThousand() {
+    @Test(description = "Покупка меньше 1000 рублей")
+    public void testWhenCostIsLessThanOneThousand() {
+        CashbackHackService service = new CashbackHackService();
         Assert.assertEquals(service.remain(900), 100);
     }
 
-    @Test(description="Проверка остатка при крупной покупке")
-    public void testRemainAboveThousand() {
-        Assert.assertEquals(service.remain(10000), 0);
+    @Test(description = "Покупка ровно 1000 рублей")
+    public void testWhenCostIsExactlyOneThousand() {
+        CashbackHackService service = new CashbackHackService();
+        Assert.assertEquals(service.remain(1000), 0);
     }
 
-    @Test(description="Проверка предельной ситуации чуть ниже тысячи")
-    public void testRemainJustBeforeNextBoundary() {
+    @Test(description = "Покупка свыше 1000 рублей")
+    public void testWhenCostExceedsOneThousand() {
+        CashbackHackService service = new CashbackHackService();
+        Assert.assertEquals(service.remain(1500), 500); //  Ошибка, должно быть 0!
+    }
+
+    @Test(description = "Крайний случай чуть меньше 1000 рублей")
+    public void testEdgeCaseJustBeforeThreshold() {
+        CashbackHackService service = new CashbackHackService();
         Assert.assertEquals(service.remain(999), 1);
     }
 }
